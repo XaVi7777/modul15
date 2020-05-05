@@ -22,11 +22,10 @@ export default class CommentApp extends React.Component {
           comments: JSON.parse(localStorage.comments),
         })
       } catch (error) {
-        if (error) {
-          this.setState({
-            error: 'Ошибка в чтении данных'
-          })
-        }
+        this.setState({
+          error: 'Ошибка в чтении данных'
+        })
+
       }
     }
   }
