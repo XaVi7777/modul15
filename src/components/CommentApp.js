@@ -11,14 +11,23 @@ export default class CommentApp extends React.Component {
       comments: [],
       addCommentInputValue: '',
       authorInputValue: '',
+      error: '',
     }
   }
 
   componentDidMount() {
     if (localStorage.comments) {
-      this.setState({
-        comments: JSON.parse(localStorage.comments),
-      })
+      try {
+        this.setState({
+          comments: JSON.parse(localStorage.comments),
+        })
+      } catch (error) {
+        if (error) {
+          this.setState({
+            error: 'Ошибка в чтении данных'
+          })
+        }
+      }
     }
   }
 
@@ -39,9 +48,9 @@ export default class CommentApp extends React.Component {
     let comments = JSON.parse(localStorage.comments);
     comments.splice(event.target.id, 1)
     localStorage.setItem('comments', JSON.stringify(comments));
-      this.setState({
-        comments,
-      })
+    this.setState({
+      comments,
+    })
   }
 
   render() {
@@ -63,6 +72,7 @@ export default class CommentApp extends React.Component {
         <button type="submit">Опубликовать</button>
       </form>
       <ol>
+        {this.state.error && <p>{this.state.error}</p>}
         {this.state.comments && this.state.comments.map((element, i) => {
           return <Comment
             id={i}
